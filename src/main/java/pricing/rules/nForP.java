@@ -29,7 +29,7 @@ public class nForP implements ISpecialPricingRule {
 				 .append(AmountConverter.convertToDollar(orderProduct.getProduct().getPrice()))
 				 .append(" = ")
 				 .append(AmountConverter.convertToDollar(this.units * orderProduct.getProduct().getPrice()))
-				 .append("$ Promotion price: "+orderProduct.getTotalPrice())
+				 .append(" Promotion price: "+orderProduct.getTotalPrice())
 				 .append("$")
 				 .toString();
 	}
