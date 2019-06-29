@@ -1,5 +1,9 @@
 package com.mbenfredj.kata.supermarket;
 
+import java.util.function.IntPredicate;
+
+import pricing.rules.ISpecialPricingRule;
+
 public class OrderProduct {
 
 	private Product product;
@@ -73,6 +77,39 @@ public class OrderProduct {
 		}
 
 		return totalPrice;
+	}
+
+	public String getTotalPriceDetails() {
+		String details = null;
+		if (this.hasSpacialPricingRule()) {
+			return this.specialPricingRule.getTotalPriceDetails(this);
+		}
+		switch (this.getProduct().getSaleType()) {
+		case WEIGHT:
+			details = new StringBuilder().append(this.getProduct().getName())
+										 .append(" : ")
+										 .append(this.units/(double)16)
+										 .append(" X ")
+										 .append(AmountConverter.convertToDollar(this.product.getPrice()))
+										 .append("\t")
+										 .append(" = ")
+										 .append(AmountConverter.convertToDollar(this.getTotalPrice()))
+										 .append("$")
+										 .toString();
+			break;
+		case UNIT:
+			details = new StringBuilder().append(this.getProduct().getName())
+										 .append(" : ")
+										 .append(this.units)
+										 .append(" X ")
+										 .append(AmountConverter.convertToDollar(this.product.getPrice()))
+										 .append(" ")
+										 .append(" = ")
+										 .append(AmountConverter.convertToDollar(this.getTotalPrice()))
+										 .append("$")
+										 .toString();
+			break;
+		}		return details;
 	}
 
 }
