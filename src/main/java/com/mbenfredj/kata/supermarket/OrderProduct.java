@@ -1,7 +1,5 @@
 package com.mbenfredj.kata.supermarket;
 
-import java.util.function.IntPredicate;
-
 public class OrderProduct {
 
 	private Product product;
@@ -23,7 +21,7 @@ public class OrderProduct {
 	}
 
 	public Boolean hasSpacialPricingRule() {
-		if(this.specialPricingRule != null) {
+		if (this.specialPricingRule != null) {
 			return true;
 		}
 		return false;
@@ -34,7 +32,6 @@ public class OrderProduct {
 		private Product product;
 		private Integer units;
 		private ISpecialPricingRule specialPricingRule;
-
 
 		public static OrderProductBuilder create() {
 			return new OrderProductBuilder();
@@ -53,7 +50,7 @@ public class OrderProduct {
 			this.units = units;
 			return this;
 		}
-		
+
 		public OrderProductBuilder withSpecialPricingRule(ISpecialPricingRule specialPricingRule) {
 			this.specialPricingRule = specialPricingRule;
 			return this;
@@ -62,10 +59,20 @@ public class OrderProduct {
 	}
 
 	public Integer getTotalPrice() {
-		if(this.hasSpacialPricingRule()) {
+		Integer totalPrice = 0;
+		if (this.hasSpacialPricingRule()) {
 			return this.specialPricingRule.getTotalPrice(this);
 		}
-		return this.units * this.product.getPrice();
+		switch (this.getProduct().getSaleType()) {
+		case WEIGHT:
+			totalPrice = (int) ((((double) this.product.getPrice()) / 16) * this.units);
+			break;
+		case UNIT:
+			totalPrice = this.units * this.product.getPrice();
+			break;
+		}
+
+		return totalPrice;
 	}
 
 }

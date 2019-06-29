@@ -16,14 +16,20 @@ public class ProductPricingTest {
 	private Integer priceOfOneCoke = 45;
 	private Integer priceOfTwoCoke = 90;
 	private Integer priceOfThreeCoke = 100;
+	
+	private Integer priceOfOnePoundApple = 199;
+	private Integer priceOfFourOuncesApple = 49;
+
 
 	// Products
 	private Product canOfBeans = Product.ProductBuilder.create().withName("can of beans")
-			.withPrice(priceOfOneCanOfBeans).build();
-	private Product coke = Product.ProductBuilder.create().withName("coke").withPrice(priceOfOneCoke).build();
+			.withPrice(priceOfOneCanOfBeans).withSaleType(ProductSaleType.UNIT).build();
+	private Product coke = Product.ProductBuilder.create().withName("coke").withPrice(priceOfOneCoke).withSaleType(ProductSaleType.UNIT).build();
+	private Product apple = Product.ProductBuilder.create().withName("apple").withPrice(priceOfOnePoundApple).withSaleType(ProductSaleType.WEIGHT).build();
 
 	//SpecialPricingRules
 	private ISpecialPricingRule nForP = new nForP(3,100);
+	
 
 	// OrderProducts
 	//can of beans orders
@@ -32,6 +38,9 @@ public class ProductPricingTest {
 	//coke orders
 	private OrderProduct orderOneCoke = OrderProductBuilder.create().withProduct(coke).withSpecialPricingRule(nForP).withUnits(1).build();
 	private OrderProduct orderThreeCoke = OrderProductBuilder.create().withProduct(coke).withSpecialPricingRule(nForP).withUnits(3).build();
+	//apple
+	private OrderProduct orderOnePoundApple = OrderProductBuilder.create().withProduct(apple).withUnits(16).build();
+	private OrderProduct orderFourOuncesApple = OrderProductBuilder.create().withProduct(apple).withUnits(4).build();
 
 	@Test
 	public void must_return_65_for_one_can_of_beans() {
@@ -59,6 +68,22 @@ public class ProductPricingTest {
 		assertThat(orderThreeCoke.getUnits()).isEqualTo(3);
 		assertThat(orderThreeCoke.hasSpacialPricingRule()).isEqualTo(true);
 		assertThat(orderThreeCoke.getTotalPrice()).isEqualTo(priceOfThreeCoke);
+	}
+	
+	@Test
+	public void must_return_199_when_pricing_one_pound_of_apple_without_special_sale() {
+		assertThat(orderOnePoundApple.getProduct().getName()).isEqualTo("apple");
+		assertThat(orderOnePoundApple.getUnits()).isEqualTo(16);
+		assertThat(orderOnePoundApple.hasSpacialPricingRule()).isEqualTo(false);
+		assertThat(orderOnePoundApple.getTotalPrice()).isEqualTo(priceOfOnePoundApple);
+	}
+	
+	@Test
+	public void must_return_49_when_pricing_four_ounces_of_apple_without_special_sale() {
+		assertThat(orderFourOuncesApple.getProduct().getName()).isEqualTo("apple");
+		assertThat(orderFourOuncesApple.getUnits()).isEqualTo(4);
+		assertThat(orderFourOuncesApple.hasSpacialPricingRule()).isEqualTo(false);
+		assertThat(orderFourOuncesApple.getTotalPrice()).isEqualTo(priceOfFourOuncesApple);
 	}
 	
 
