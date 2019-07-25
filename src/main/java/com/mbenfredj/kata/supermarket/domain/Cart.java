@@ -1,23 +1,26 @@
-package com.mbenfredj.kata.supermarket;
+package com.mbenfredj.kata.supermarket.domain;
 
 import java.util.List;
 
-public class Chart {
-	private List<OrderProduct> orders;
+import com.mbenfredj.kata.supermarket.business.OrderProductService;
 
-	public Chart(List<OrderProduct> orders) {
+public class Cart {
+	private List<OrderItem> orders;
+	OrderProductService orderProductService = new OrderProductService();
+
+	public Cart(List<OrderItem> orders) {
 		this.orders = orders;
 	}
 
 	public String print() {
 		StringBuilder details = new StringBuilder();
-		orders.forEach(order -> details.append(order.getTotalPriceDetails()).append("\n"));
+		orders.forEach(order -> details.append(orderProductService.getTotalPriceDetails(order)).append("\n"));
 		details.append("TOTAL : ").append(total());
 
 		return details.toString();
 	}
 
 	private int total() {
-		return orders.stream().map(OrderProduct::getTotalPrice).reduce(0, Integer::sum);
+		return orders.stream().map(order->orderProductService.calculateOrderItemPrice(order)).reduce(0, Integer::sum);
 	}
 }

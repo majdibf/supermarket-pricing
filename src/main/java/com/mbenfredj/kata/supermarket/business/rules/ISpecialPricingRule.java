@@ -1,12 +1,11 @@
-package pricing.rules;
+package com.mbenfredj.kata.supermarket.business.rules;
 
-import com.mbenfredj.kata.supermarket.OrderProduct;
+import com.mbenfredj.kata.supermarket.domain.OrderItem;
 
 public interface ISpecialPricingRule {
 
-	Integer getTotalPrice(OrderProduct orderProduct);
+	Integer calculatePrice(OrderItem orderProduct);
 
-	String getTotalPriceDetails(OrderProduct orderProduct);
-	
+	String getTotalPriceDetails(OrderItem orderProduct);	
 
 }

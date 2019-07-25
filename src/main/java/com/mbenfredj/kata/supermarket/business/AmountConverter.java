@@ -1,4 +1,4 @@
-package com.mbenfredj.kata.supermarket;
+package com.mbenfredj.kata.supermarket.business;
 
 public class AmountConverter {
 

@@ -1,7 +1,7 @@
-package pricing.rules;
+package com.mbenfredj.kata.supermarket.business.rules;
 
-import com.mbenfredj.kata.supermarket.AmountConverter;
-import com.mbenfredj.kata.supermarket.OrderProduct;
+import com.mbenfredj.kata.supermarket.business.AmountConverter;
+import com.mbenfredj.kata.supermarket.domain.OrderItem;
 
 public class nForP implements ISpecialPricingRule {
 
@@ -15,21 +15,21 @@ public class nForP implements ISpecialPricingRule {
 	}
 
 	@Override
-	public Integer getTotalPrice(OrderProduct orderProduct) {
-		return (this.price * (orderProduct.getUnits() / this.units))
-				+ (orderProduct.getProduct().getPrice() * (orderProduct.getUnits() % this.units));
+	public Integer calculatePrice(OrderItem orderItem) {
+		return (this.price * (orderItem.getUnits() / this.units))
+				+ (orderItem.getProduct().getPrice() * (orderItem.getUnits() % this.units));
 	}
 
 	@Override
-	public String getTotalPriceDetails(OrderProduct orderProduct) {
-		return new StringBuilder().append(orderProduct.getProduct().getName())
+	public String getTotalPriceDetails(OrderItem orderItem) {
+		return new StringBuilder().append(orderItem.getProduct().getName())
 				 .append(" :  ")
 				 .append(this.units)
 				 .append(" X ")
-				 .append(AmountConverter.convertToDollar(orderProduct.getProduct().getPrice()))
+				 .append(AmountConverter.convertToDollar(orderItem.getProduct().getPrice()))
 				 .append(" = ")
-				 .append(AmountConverter.convertToDollar(this.units * orderProduct.getProduct().getPrice()))
-				 .append(" Promotion price: "+orderProduct.getTotalPrice())
+				 .append(AmountConverter.convertToDollar(this.units * orderItem.getProduct().getPrice()))
+				 .append(" Promotion price: "+calculatePrice(orderItem))
 				 .append("$")
 				 .toString();
 	}

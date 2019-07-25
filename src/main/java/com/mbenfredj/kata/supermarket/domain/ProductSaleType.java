@@ -1,4 +1,4 @@
-package com.mbenfredj.kata.supermarket;
+package com.mbenfredj.kata.supermarket.domain;
 
 public enum ProductSaleType {
 	UNIT,
